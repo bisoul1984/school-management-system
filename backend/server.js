@@ -26,7 +26,7 @@ const app = express();
 const corsOptions = {
   origin: [
     'http://localhost:3000',  // Local development
-    'https://your-frontend-domain.vercel.app', // Add your deployed frontend URL
+    'https://school-management-system-94li-4whx4c7zq.vercel.app', // Add your deployed frontend URL
     process.env.CORS_ORIGIN
   ].filter(Boolean),
   credentials: true,
@@ -37,11 +37,11 @@ const corsOptions = {
 app.use(cors(corsOptions));
 app.use(express.json());
 
+// Serve static files (e.g., manifest.json)
+app.use(express.static('public'));
+
 // Routes
-app.use('/api/auth', (req, res, next) => {
-  console.log('Auth route accessed:', req.method, req.path);
-  next();
-}, authRoutes);
+app.use('/api/auth', authRoutes);
 app.use('/api/users', userRoutes);
 app.use('/api/classes', classRoutes);
 app.use('/api/teachers', teacherRoutes);
@@ -122,4 +122,4 @@ process.on('unhandledRejection', (err) => {
   process.exit(1);
 });
 
-startServer(); 
+startServer();

@@ -1,5 +1,5 @@
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
-import axios from 'axios';
+import api from '../../services/api';
 
 // Create new teacher
 export const addTeacher = createAsyncThunk(
@@ -7,7 +7,7 @@ export const addTeacher = createAsyncThunk(
   async (teacherData, { rejectWithValue }) => {
     try {
       console.log('Adding teacher:', teacherData);
-      const response = await axios.post('http://localhost:8081/api/teachers', teacherData);
+      const response = await api.post('/teachers', teacherData);
       return response.data;
     } catch (error) {
       console.error('Add error:', error);
@@ -21,7 +21,7 @@ export const fetchTeachers = createAsyncThunk(
   'teachers/fetchTeachers',
   async (_, { rejectWithValue }) => {
     try {
-      const response = await axios.get('http://localhost:8081/api/teachers');
+      const response = await api.get('/teachers');
       return response.data;
     } catch (error) {
       return rejectWithValue(error.response?.data?.message || 'Failed to fetch teachers');
@@ -34,7 +34,7 @@ export const updateTeacher = createAsyncThunk(
   'teachers/updateTeacher',
   async ({ id, data }, { rejectWithValue }) => {
     try {
-      const response = await axios.put(`http://localhost:8081/api/teachers/${id}`, data);
+      const response = await api.put(`/teachers/${id}`, data);
       return response.data;
     } catch (error) {
       return rejectWithValue(error.response?.data?.message || 'Failed to update teacher');
@@ -47,7 +47,7 @@ export const deleteTeacher = createAsyncThunk(
   'teachers/deleteTeacher',
   async (id, { rejectWithValue }) => {
     try {
-      await axios.delete(`http://localhost:8081/api/teachers/${id}`);
+      await api.delete(`/teachers/${id}`);
       return id;
     } catch (error) {
       return rejectWithValue(error.response?.data?.message || 'Failed to delete teacher');
