@@ -18,6 +18,9 @@ api.interceptors.request.use(
       config.headers.Authorization = `Bearer ${token}`;
     }
     
+    // Log the request URL for debugging
+    console.log('Making request to:', config.baseURL + config.url);
+    
     return config;
   },
   (error) => {
@@ -46,13 +49,13 @@ api.interceptors.response.use(
 
 // Class related endpoints
 const apiClass = {
-  getClassDetails: (classId) => axios.get(`/api/classes/${classId}`),
-  getClassAssignments: (classId) => axios.get(`/api/classes/${classId}/assignments`),
-  createAssignment: (classId, data) => axios.post(`/api/classes/${classId}/assignments`, data),
-  deleteAssignment: (classId, assignmentId) => axios.delete(`/api/classes/${classId}/assignments/${assignmentId}`),
-  addStudentToClass: (classId, studentId) => axios.post(`/api/classes/${classId}/students`, { studentId }),
-  removeStudentFromClass: (classId, studentId) => axios.delete(`/api/classes/${classId}/students/${studentId}`),
-  getAvailableStudents: () => axios.get('/api/students/available'),
+  getClassDetails: (classId) => api.get(`/classes/${classId}`),
+  getClassAssignments: (classId) => api.get(`/classes/${classId}/assignments`),
+  createAssignment: (classId, data) => api.post(`/classes/${classId}/assignments`, data),
+  deleteAssignment: (classId, assignmentId) => api.delete(`/classes/${classId}/assignments/${assignmentId}`),
+  addStudentToClass: (classId, studentId) => api.post(`/classes/${classId}/students`, { studentId }),
+  removeStudentFromClass: (classId, studentId) => api.delete(`/classes/${classId}/students/${studentId}`),
+  getAvailableStudents: () => api.get('/students/available'),
 };
 
-export default api; 
+export { api as default, apiClass }; 
