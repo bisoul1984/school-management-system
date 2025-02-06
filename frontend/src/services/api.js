@@ -1,15 +1,27 @@
 import axios from 'axios';
 
-const API_URL = process.env.REACT_APP_API_URL || 'http://localhost:8081/api';
+// Add more detailed debugging
+console.log('Environment variables:', {
+  NODE_ENV: process.env.NODE_ENV,
+  REACT_APP_API_URL: process.env.REACT_APP_API_URL
+});
+
+const API_URL = process.env.REACT_APP_API_URL;
+
+if (!API_URL) {
+  console.error('API_URL is not set! Using fallback URL');
+}
+
+console.log('Final API_URL:', API_URL || 'http://localhost:8081/api');
 
 const api = axios.create({
-  baseURL: API_URL,
+  baseURL: API_URL || 'http://localhost:8081/api',
   headers: {
     'Content-Type': 'application/json'
   }
 });
 
-// Request interceptor
+// Request interceptor with more detailed logging
 api.interceptors.request.use(
   (config) => {
     const token = localStorage.getItem('token');
@@ -18,12 +30,16 @@ api.interceptors.request.use(
       config.headers.Authorization = `Bearer ${token}`;
     }
     
-    // Log the request URL for debugging
-    console.log('Making request to:', config.baseURL + config.url);
+    console.log('Request Config:', {
+      url: config.baseURL + config.url,
+      method: config.method,
+      headers: config.headers
+    });
     
     return config;
   },
   (error) => {
+    console.error('Request Error:', error);
     return Promise.reject(error);
   }
 );
