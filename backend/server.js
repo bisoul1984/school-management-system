@@ -29,7 +29,10 @@ app.use(cors({
 app.use(express.json());
 
 // Routes
-app.use('/api/auth', authRoutes);
+app.use('/api/auth', (req, res, next) => {
+  console.log('Auth route accessed:', req.method, req.path);
+  next();
+}, authRoutes);
 app.use('/api/users', userRoutes);
 app.use('/api/classes', classRoutes);
 app.use('/api/teachers', teacherRoutes);
@@ -45,6 +48,12 @@ app.get('/', (req, res) => {
 
 app.get('/api/test', (req, res) => {
   res.json({ message: 'API is working correctly' });
+});
+
+// Add error logging
+app.use((req, res) => {
+  console.log('404 - Route not found:', req.method, req.path);
+  res.status(404).json({ message: `Cannot ${req.method} ${req.path}` });
 });
 
 // Connect to MongoDB and start server
