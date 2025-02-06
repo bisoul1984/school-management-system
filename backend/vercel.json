@@ -8,8 +8,18 @@
   ],
   "routes": [
     {
+      "src": "/api/(.*)",
+      "dest": "server.js"
+    },
+    {
       "src": "/(.*)",
       "dest": "server.js"
     }
-  ]
+  ],
+  "env": {
+    "MONGODB_URI": "mongodb://fikertetadesse1403:fdqOzjXi9h9KGYGb@bisrate-shard-00-00.sxkr4.mongodb.net:27017/school_management?ssl=true&authSource=admin",
+    "JWT_SECRET": "school_management_secret_key_32_chars",
+    "PORT": "8081",
+    "CORS_ORIGIN": "http://localhost:3000"
+  }
 } 
