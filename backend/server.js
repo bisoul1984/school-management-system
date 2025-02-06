@@ -2,6 +2,7 @@ const express = require('express');
 const cors = require('cors');
 const mongoose = require('mongoose');
 const dotenv = require('dotenv');
+const User = require('./models/User');
 
 // Load env vars
 dotenv.config();
@@ -70,16 +71,25 @@ const startServer = async () => {
     
     console.log('MongoDB Connected Successfully');
 
+    // Add this code to create admin user if it doesn't exist
+    const adminExists = await User.findOne({ email: 'admin@example.com' });
+    if (!adminExists) {
+      await User.create({
+        firstName: 'Admin',
+        lastName: 'User',
+        email: 'admin@example.com',
+        password: 'admin123',
+        role: 'admin'
+      });
+      console.log('Admin user created successfully');
+    }
+
     const PORT = process.env.PORT || 8081;
     app.listen(PORT, () => {
       console.log(`Server running on port ${PORT}`);
     });
   } catch (error) {
-    console.error('Server startup error:', {
-      name: error.name,
-      message: error.message,
-      code: error.code
-    });
+    console.error('Server startup error:', error);
     process.exit(1);
   }
 };
