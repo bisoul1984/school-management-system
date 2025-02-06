@@ -2,7 +2,10 @@ import axios from 'axios';
 import config from '../config';
 
 // Add more detailed debugging
-console.log('Config:', config);
+console.log('API Configuration:', {
+  baseURL: config.API_URL,
+  currentOrigin: window.location.origin
+});
 
 const api = axios.create({
   baseURL: config.API_URL,
@@ -20,8 +23,11 @@ api.interceptors.request.use(
       config.headers.Authorization = `Bearer ${token}`;
     }
     
-    console.log('Request Config:', {
-      url: config.baseURL + config.url,
+    // Add detailed request logging
+    console.log('Making API Request:', {
+      baseURL: config.baseURL,
+      url: config.url,
+      fullURL: config.baseURL + config.url,
       method: config.method,
       headers: config.headers
     });
