@@ -1,12 +1,12 @@
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
-import axios from 'axios';
+import api from '../../services/api';
 
 // Create new student
 export const addStudent = createAsyncThunk(
   'students/addStudent',
   async (studentData, { rejectWithValue }) => {
     try {
-      const response = await axios.post('http://localhost:8081/api/students', studentData);
+      const response = await api.post('/students', studentData);
       return response.data;
     } catch (error) {
       return rejectWithValue(error.response.data);
@@ -19,10 +19,10 @@ export const fetchStudents = createAsyncThunk(
   'students/fetchStudents',
   async (_, { rejectWithValue }) => {
     try {
-      const response = await axios.get('http://localhost:8081/api/students');
+      const response = await api.get('/students');
       return response.data;
     } catch (error) {
-      return rejectWithValue(error.response.data);
+      return rejectWithValue(error.response?.data?.message || 'Failed to fetch students');
     }
   }
 );
@@ -33,7 +33,7 @@ export const updateStudent = createAsyncThunk(
   async ({ id, data }, { rejectWithValue, dispatch }) => {
     try {
       console.log('Updating student:', id, data);
-      const response = await axios.put(`http://localhost:8081/api/students/${id}`, {
+      const response = await api.put(`/students/${id}`, {
         ...data,
         role: 'student'
       });
@@ -55,7 +55,7 @@ export const deleteStudent = createAsyncThunk(
   async (id, { rejectWithValue, dispatch }) => {
     try {
       console.log('Deleting student:', id);
-      await axios.delete(`http://localhost:8081/api/students/${id}`);
+      await api.delete(`/students/${id}`);
       console.log('Delete successful');
       
       // Fetch updated list after deletion
