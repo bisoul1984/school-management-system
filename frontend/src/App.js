@@ -81,10 +81,8 @@ const AppContent = () => {
           <Route path="/unauthorized" element={<UnauthorizedPage />} />
           
           <Route path="/dashboard" element={
-            <ProtectedRoute allowedRoles={['admin', 'teacher', 'student', 'parent']}>
-              <DashboardLayout>
-                <Dashboard />
-              </DashboardLayout>
+            <ProtectedRoute>
+              <Dashboard />
             </ProtectedRoute>
           } />
           

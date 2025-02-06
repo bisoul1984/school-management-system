@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { useNavigate, useLocation } from 'react-router-dom';
 import { motion } from 'framer-motion';
 import { login } from '../../store/slices/authSlice';
@@ -16,13 +16,12 @@ const LoginPage = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const location = useLocation();
+  const { isAuthenticated, error, loading } = useSelector((state) => state.auth);
   const [selectedRole, setSelectedRole] = useState(location.state?.selectedRole || '');
   const [formData, setFormData] = useState({
     email: '',
     password: ''
   });
-  const [error, setError] = useState('');
-  const [isLoading, setIsLoading] = useState(false);
 
   const userTypes = [
     {
@@ -57,52 +56,33 @@ const LoginPage = () => {
     }
   }, [location.state]);
 
+  useEffect(() => {
+    if (isAuthenticated) {
+      navigate('/dashboard');
+    }
+  }, [isAuthenticated, navigate]);
+
   const handleChange = (e) => {
     setFormData({
       ...formData,
       [e.target.name]: e.target.value
     });
     // Clear error when user starts typing
-    setError('');
+    error && dispatch(login({ email: '', password: '' }));
   };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
     if (!selectedRole) {
-      setError('Please select a user type');
+      dispatch(login({ email: '', password: '' }));
       return;
     }
 
-    setIsLoading(true);
-    setError('');
-
     try {
-      const loginData = {
-        ...formData,
-        role: selectedRole
-      };
-
-      const response = await api.post('/auth/login', loginData);
-      const { token, user } = response.data;
-
-      // Store in localStorage
-      localStorage.setItem('token', token);
-      localStorage.setItem('user', JSON.stringify(user));
-
-      // Update Redux state
-      dispatch(login({ token, user }));
-
-      // Set auth header
-      api.defaults.headers.common['Authorization'] = `Bearer ${token}`;
-
-      // Navigate to dashboard
-      navigate('/dashboard', { replace: true });
-
+      await dispatch(login(formData)).unwrap();
+      // Navigation will be handled by useEffect
     } catch (err) {
       console.error('Login failed:', err);
-      setError(err.response?.data?.message || 'Login failed');
-    } finally {
-      setIsLoading(false);
     }
   };
 
@@ -186,10 +166,10 @@ const LoginPage = () => {
               <div>
                 <button
                   type="submit"
-                  disabled={isLoading}
+                  disabled={loading}
                   className="w-full flex justify-center py-2 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
                 >
-                  {isLoading ? <LoadingSpinner size="sm" /> : 'Sign in'}
+                  {loading ? <LoadingSpinner size="sm" /> : 'Sign in'}
                 </button>
               </div>
             </form>
