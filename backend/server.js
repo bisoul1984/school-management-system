@@ -39,8 +39,12 @@ app.use('/api/events', eventRoutes);
 app.use('/api/messages', messageRoutes);
 
 // Test route
+app.get('/', (req, res) => {
+  res.json({ message: 'School Management System API is running' });
+});
+
 app.get('/api/test', (req, res) => {
-  res.json({ message: 'API is working' });
+  res.json({ message: 'API is working correctly' });
 });
 
 // Connect to MongoDB and start server
