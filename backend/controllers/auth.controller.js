@@ -109,50 +109,44 @@ exports.register = async (req, res) => {
 exports.login = async (req, res) => {
   try {
     const { email, password } = req.body;
+    console.log('Login attempt for:', email);
 
-    // Find user and explicitly select password
+    // Find user
     const user = await User.findOne({ email }).select('+password');
-    
+    console.log('User found:', user ? 'Yes' : 'No');
+
     if (!user) {
+      console.log('No user found with email:', email);
       return res.status(401).json({
         success: false,
-        message: 'Invalid email or password'
+        message: 'Invalid credentials'
       });
     }
 
     // Check password
-    const isMatch = await bcrypt.compare(password, user.password);
-    
+    const isMatch = await user.comparePassword(password);
+    console.log('Password match:', isMatch ? 'Yes' : 'No');
+
     if (!isMatch) {
+      console.log('Password does not match for user:', email);
       return res.status(401).json({
         success: false,
-        message: 'Invalid email or password'
+        message: 'Invalid credentials'
       });
     }
 
     // Generate token
-    const token = jwt.sign(
-      { id: user._id },
-      process.env.JWT_SECRET,
-      { expiresIn: '30d' }
-    );
+    const token = generateToken(user._id);
+    console.log('Token generated successfully');
 
     // Remove password from response
     user.password = undefined;
 
-    // Send response
     res.status(200).json({
       success: true,
       token,
-      user: {
-        id: user._id,
-        firstName: user.firstName,
-        lastName: user.lastName,
-        email: user.email,
-        role: user.role
-      }
+      user
     });
-
   } catch (error) {
     console.error('Login error:', error);
     res.status(500).json({

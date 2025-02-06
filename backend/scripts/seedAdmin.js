@@ -21,18 +21,10 @@ const createAdmin = async () => {
       
       console.log('Admin user created successfully:', admin);
     } else {
-      // Update admin role if it exists but role is not admin
-      if (adminExists.role !== 'admin') {
-        adminExists.role = 'admin';
-        await adminExists.save();
-        console.log('Updated existing user to admin role');
-      } else {
-        console.log('Admin user already exists');
-      }
+      console.log('Admin user already exists');
     }
     
     await mongoose.disconnect();
-    console.log('Disconnected from MongoDB');
   } catch (error) {
     console.error('Error:', error);
     process.exit(1);
