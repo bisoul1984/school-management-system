@@ -8,7 +8,7 @@ console.log('API Configuration:', {
 });
 
 const api = axios.create({
-  baseURL: config.API_URL,
+  baseURL: config.API_URL || 'https://school-management-system-94li-4whx4c7zq.vercel.app/api',
   headers: {
     'Content-Type': 'application/json'
   }
