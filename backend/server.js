@@ -23,12 +23,18 @@ const messageRoutes = require('./routes/message.routes');
 const app = express();
 
 // Middleware
-app.use(cors({
-  origin: 'https://school-management-system-94li-4whx4c7zq.vercel.app',
+const corsOptions = {
+  origin: [
+    'http://localhost:3000',  // Local development
+    'https://your-frontend-domain.vercel.app', // Add your deployed frontend URL
+    process.env.CORS_ORIGIN
+  ].filter(Boolean),
   credentials: true,
   methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
   allowedHeaders: ['Content-Type', 'Authorization']
-}));
+};
+
+app.use(cors(corsOptions));
 app.use(express.json());
 
 // Routes
