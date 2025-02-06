@@ -24,7 +24,11 @@ const app = express();
 
 // Middleware
 app.use(cors({
-  origin: ['https://school-management-system-94li.vercel.app', 'http://localhost:3000'],
+  origin: [
+    'https://school-management-system-94li.vercel.app',
+    'https://school-management-system-94li-4whx4c7zq.vercel.app',
+    'http://localhost:3000'
+  ],
   credentials: true,
   methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
   allowedHeaders: ['Content-Type', 'Authorization']
