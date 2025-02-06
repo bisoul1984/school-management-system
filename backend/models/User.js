@@ -100,11 +100,16 @@ userSchema.pre('save', async function(next) {
 // Method to compare password
 userSchema.methods.comparePassword = async function(candidatePassword) {
   try {
+    console.log('Comparing passwords...');
     if (!this.password) {
+      console.log('No password stored for user');
       throw new Error('Password field not selected');
     }
-    return await bcrypt.compare(candidatePassword, this.password);
+    const isMatch = await bcrypt.compare(candidatePassword, this.password);
+    console.log('Password match result:', isMatch);
+    return isMatch;
   } catch (error) {
+    console.error('Password comparison error:', error);
     throw new Error('Password comparison failed');
   }
 };
