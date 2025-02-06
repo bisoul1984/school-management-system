@@ -1,21 +1,11 @@
 import axios from 'axios';
+import config from '../config';
 
 // Add more detailed debugging
-console.log('Environment variables:', {
-  NODE_ENV: process.env.NODE_ENV,
-  REACT_APP_API_URL: process.env.REACT_APP_API_URL
-});
-
-const API_URL = process.env.REACT_APP_API_URL;
-
-if (!API_URL) {
-  console.error('API_URL is not set! Using fallback URL');
-}
-
-console.log('Final API_URL:', API_URL || 'http://localhost:8081/api');
+console.log('Config:', config);
 
 const api = axios.create({
-  baseURL: API_URL || 'http://localhost:8081/api',
+  baseURL: config.API_URL,
   headers: {
     'Content-Type': 'application/json'
   }
