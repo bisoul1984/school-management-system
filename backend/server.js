@@ -25,8 +25,8 @@ const app = express();
 // Middleware
 const corsOptions = {
   origin: [
-    'http://localhost:3000',  // Local development
-    'https://school-management-system-94li-4whx4c7zq.vercel.app', // Add your deployed frontend URL
+    'http://localhost:3000',
+    'https://school-management-system-94li-4whx4c7zq.vercel.app',
     process.env.CORS_ORIGIN
   ].filter(Boolean),
   credentials: true,
