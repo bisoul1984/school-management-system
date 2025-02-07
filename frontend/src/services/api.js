@@ -1,10 +1,11 @@
 import axios from 'axios';
 import config from '../config';
 
-// Add more detailed debugging
-console.log('API Configuration:', {
+// Enhanced debugging
+console.log('API Service Configuration:', {
   baseURL: config.API_URL,
-  currentOrigin: window.location.origin
+  currentOrigin: window.location.origin,
+  isVercel: window.location.hostname.includes('vercel.app')
 });
 
 const api = axios.create({
@@ -14,6 +15,18 @@ const api = axios.create({
   },
   withCredentials: true
 });
+
+// Add error handling for connection refused
+api.interceptors.response.use(
+  response => response,
+  error => {
+    if (error.code === 'ERR_CONNECTION_REFUSED') {
+      console.error('Connection refused. Are you trying to connect to:', config.API_URL);
+      return Promise.reject('Backend server is not accessible. Please try again later.');
+    }
+    return Promise.reject(error);
+  }
+);
 
 // Request interceptor with more detailed logging
 api.interceptors.request.use(
