@@ -8,7 +8,7 @@ console.log('API Configuration:', {
 });
 
 const api = axios.create({
-  baseURL: config.API_URL, // Use the correct backend URL from config
+  baseURL: config.API_URL,
   headers: {
     'Content-Type': 'application/json'
   }
