@@ -1,7 +1,7 @@
 const config = {
   // If accessing from deployed frontend URL, use deployed backend URL
   API_URL: window.location.hostname.includes('vercel.app')
-    ? 'https://school-management-system-zuu2.vercel.app/api'  // Deployed backend
+    ? 'https://school-management-system-backend-zuu2.vercel.app/api'  // Your deployed backend URL
     : 'http://localhost:8081/api' // Local development
 };
 
