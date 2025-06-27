@@ -82,6 +82,13 @@ app.get('/api/test', (req, res) => {
   res.json({ message: 'API is working correctly' });
 });
 
+// Add a simple registration test endpoint
+app.post('/api/auth/test-register', (req, res) => {
+  console.log('Test registration endpoint hit');
+  console.log('Request body:', req.body);
+  res.json({ message: 'Test registration endpoint working', body: req.body });
+});
+
 // Add error logging
 app.use((req, res) => {
   console.log('404 - Route not found:', req.method, req.path);

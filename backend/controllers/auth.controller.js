@@ -15,6 +15,13 @@ const generateToken = (id) => {
 // Register user
 exports.register = async (req, res) => {
   try {
+    console.log('Registration request received:', {
+      method: req.method,
+      url: req.url,
+      body: req.body,
+      headers: req.headers
+    });
+
     const { 
       firstName, 
       lastName, 
@@ -32,9 +39,14 @@ exports.register = async (req, res) => {
       phone
     } = req.body;
 
+    console.log('Extracted data:', {
+      firstName, lastName, email, role, subject, qualifications, grade, dateOfBirth, childName, phone
+    });
+
     // Check if user exists
     const userExists = await User.findOne({ email });
     if (userExists) {
+      console.log('User already exists:', email);
       return res.status(400).json({
         message: 'User already exists'
       });
@@ -52,6 +64,7 @@ exports.register = async (req, res) => {
     // Add role-specific fields
     if (role === 'teacher') {
       if (!subject || !qualifications) {
+        console.log('Missing teacher fields:', { subject, qualifications });
         return res.status(400).json({
           message: 'Subject and qualifications are required for teachers'
         });
@@ -62,6 +75,7 @@ exports.register = async (req, res) => {
 
     if (role === 'student') {
       if (!grade || !dateOfBirth) {
+        console.log('Missing student fields:', { grade, dateOfBirth });
         return res.status(400).json({
           message: 'Grade and date of birth are required for students'
         });
@@ -72,6 +86,7 @@ exports.register = async (req, res) => {
 
     if (role === 'parent') {
       if (!childName) {
+        console.log('Missing parent fields:', { childName });
         return res.status(400).json({
           message: 'Child name is required for parents'
         });
@@ -79,6 +94,8 @@ exports.register = async (req, res) => {
       userData.childName = childName;
       userData.phone = phone;
     }
+
+    console.log('Creating user with data:', userData);
 
     const user = await User.create(userData);
 
@@ -91,6 +108,8 @@ exports.register = async (req, res) => {
 
     // Remove password from response
     user.password = undefined;
+
+    console.log('User created successfully:', user._id);
 
     res.status(201).json({
       user,
