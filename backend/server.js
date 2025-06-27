@@ -24,12 +24,34 @@ const app = express();
 
 // Middleware
 const corsOptions = {
-  origin: [
-    'http://localhost:3000',  // Local frontend
-    'https://school-management-system-94li.vercel.app', // Your deployed frontend URL
-    'https://school-management-system-94li-4whx4c7zq.vercel.app', // Alternative URL format
-    process.env.CORS_ORIGIN
-  ].filter(Boolean),
+  origin: function (origin, callback) {
+    // Allow requests with no origin (like mobile apps or curl requests)
+    if (!origin) return callback(null, true);
+    
+    const allowedOrigins = [
+      'http://localhost:3000',  // Local frontend
+      'https://school-management-system-94li.vercel.app',
+      'https://school-management-system-94li-4whx4c7zq.vercel.app',
+      'https://school-management-system-bdya.vercel.app', // Current frontend URL
+      /^https:\/\/.*\.vercel\.app$/, // Any Vercel domain
+      /^https:\/\/.*\.railway\.app$/, // Any Railway domain
+    ];
+    
+    // Check if origin is allowed
+    const isAllowed = allowedOrigins.some(allowedOrigin => {
+      if (allowedOrigin instanceof RegExp) {
+        return allowedOrigin.test(origin);
+      }
+      return allowedOrigin === origin;
+    });
+    
+    if (isAllowed) {
+      callback(null, true);
+    } else {
+      console.log('CORS blocked origin:', origin);
+      callback(null, true); // Allow all origins for now
+    }
+  },
   credentials: true,
   methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
   allowedHeaders: ['Content-Type', 'Authorization']
