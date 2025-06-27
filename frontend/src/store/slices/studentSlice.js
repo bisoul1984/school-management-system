@@ -19,7 +19,7 @@ export const fetchStudents = createAsyncThunk(
   'students/fetchStudents',
   async (_, { rejectWithValue }) => {
     try {
-      const response = await api.get('/api/students');
+      const response = await api.get('/students');
       return response.data;
     } catch (error) {
       return rejectWithValue(error.response?.data?.message || 'Failed to fetch students');
