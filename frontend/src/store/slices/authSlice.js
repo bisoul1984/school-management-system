@@ -1,6 +1,5 @@
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
 import api from '../../services/api';
-import axios from 'axios';
 
 // Async thunks
 export const register = createAsyncThunk(
@@ -55,7 +54,7 @@ export const sendResetLink = createAsyncThunk(
   'auth/sendResetLink',
   async ({ email }, { rejectWithValue }) => {
     try {
-      const response = await axios.post('/api/auth/forgot-password', { email });
+      const response = await api.post('/auth/forgot-password', { email });
       return response.data;
     } catch (error) {
       return rejectWithValue(error.response?.data?.message || 'Failed to send reset link');
@@ -67,7 +66,7 @@ export const resetPassword = createAsyncThunk(
   'auth/resetPassword',
   async ({ token, password }, { rejectWithValue }) => {
     try {
-      const response = await axios.post(`/api/auth/reset-password/${token}`, { password });
+      const response = await api.post(`/auth/reset-password/${token}`, { password });
       return response.data;
     } catch (error) {
       return rejectWithValue(error.response?.data?.message || 'Failed to reset password');
