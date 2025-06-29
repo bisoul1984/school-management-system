@@ -38,6 +38,8 @@ import AssignmentsList from './components/assignments/AssignmentsList';
 import ProgressReportsList from './components/reports/ProgressReportsList';
 import EventsList from './components/events/EventsList';
 import PrivacyPage from './components/privacy/PrivacyPage';
+import CourseList from './components/learning/CourseList';
+import CourseDetail from './components/learning/CourseDetail';
 
 // Create a wrapper component that uses useLocation
 const AppContent = () => {
@@ -285,6 +287,11 @@ const AppContent = () => {
               </ProtectedRoute>
             }
           />
+
+          {/* Online Learning Platform Routes */}
+          <Route path="/learning" element={<CourseList />} />
+          <Route path="/learning/course/:courseId" element={<CourseDetail />} />
+          <Route path="/learning/course/:courseId/preview" element={<CourseDetail />} />
         </Routes>
       </main>
       {!isDashboardRoute && <Footer />}
