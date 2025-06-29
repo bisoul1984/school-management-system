@@ -755,7 +755,7 @@ const Dashboard = () => {
         <BookOpenIcon className="h-6 w-6 text-indigo-600 mr-2" />
         Student Dashboard
       </h2>
-      <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
         <div className="p-4 bg-indigo-50 rounded-lg">
           <div className="flex items-center mb-4">
             <DocumentCheckIcon className="h-5 w-5 text-indigo-600 mr-2" />
@@ -792,6 +792,19 @@ const Dashboard = () => {
             className="w-full mt-2 px-4 py-2 bg-pink-600 text-white rounded hover:bg-pink-700"
           >
             View Assignments
+          </button>
+        </div>
+
+        <div className="p-4 bg-green-50 rounded-lg">
+          <div className="flex items-center mb-4">
+            <BookOpenIcon className="h-5 w-5 text-green-600 mr-2" />
+            <h3 className="text-lg font-medium text-gray-900">Learning Platform</h3>
+          </div>
+          <button 
+            onClick={() => navigate('/learning')}
+            className="w-full mt-2 px-4 py-2 bg-green-600 text-white rounded hover:bg-green-700"
+          >
+            Start Learning
           </button>
         </div>
       </div>

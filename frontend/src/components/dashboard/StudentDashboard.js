@@ -1,4 +1,6 @@
 import React from 'react';
+import { Link } from 'react-router-dom';
+import { BookOpenIcon } from '@heroicons/react/24/outline';
 
 const StudentDashboard = () => {
   return (
@@ -37,6 +39,25 @@ const StudentDashboard = () => {
               </dd>
             </div>
           </div>
+        </div>
+      </div>
+
+      {/* Learning Platform Card */}
+      <div className="bg-white shadow px-4 py-5 sm:rounded-lg sm:p-6">
+        <div className="flex items-center justify-between">
+          <div>
+            <h3 className="text-lg font-medium text-gray-900">Online Learning</h3>
+            <p className="mt-1 text-sm text-gray-500">
+              Access your courses and continue learning
+            </p>
+          </div>
+          <Link
+            to="/learning"
+            className="inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md shadow-sm text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500"
+          >
+            <BookOpenIcon className="h-4 w-4 mr-2" />
+            Go to Learning Platform
+          </Link>
         </div>
       </div>
     </div>

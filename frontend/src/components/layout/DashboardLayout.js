@@ -99,6 +99,12 @@ const DashboardLayout = ({ children }) => {
       allowedRoles: ['admin', 'teacher', 'student', 'parent']
     },
     {
+      name: 'Learning Platform',
+      href: '/learning',
+      icon: BookOpenIcon,
+      allowedRoles: ['student', 'admin', 'teacher']
+    },
+    {
       name: 'Grades',
       href: '/grades',
       icon: ChartBarIcon,
@@ -163,6 +169,7 @@ const DashboardLayout = ({ children }) => {
     '/students',
     '/teachers',
     '/classes',
+    '/learning',
     '/grades',
     '/performance',
     '/schedule',
@@ -190,6 +197,8 @@ const DashboardLayout = ({ children }) => {
         return 'Teachers';
       case '/classes':
         return 'Classes';
+      case '/learning':
+        return 'Learning Platform';
       case '/profile':
         return 'Profile';
       case '/grades':
