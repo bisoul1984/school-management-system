@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
+import { logout } from '../../store/slices/authSlice';
 import { fetchClasses } from '../../store/slices/classSlice';
 import { fetchStudents } from '../../store/slices/studentSlice';
 import { fetchTeachers } from '../../store/slices/teacherSlice';
@@ -28,7 +29,8 @@ import {
   CalendarDaysIcon,
   ChatBubbleLeftRightIcon,
   DocumentCheckIcon,
-  UsersIcon
+  UsersIcon,
+  ArrowRightOnRectangleIcon
 } from '@heroicons/react/24/outline';
 import { Line, Doughnut } from 'react-chartjs-2';
 import {
@@ -845,12 +847,33 @@ const Dashboard = () => {
     </div>
   );
 
+  /**
+   * Handles user logout
+   * Dispatches logout action and navigates to home page
+   */
+  const handleLogout = () => {
+    dispatch(logout());
+    navigate('/');
+  };
+
   return (
     <div className="py-6 bg-gradient-to-br from-indigo-50 via-purple-50 to-pink-50 min-h-screen">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 md:px-8">
-        <h1 className="text-3xl font-bold text-gray-900 mb-2">
-          Welcome back, {user?.firstName}!
-        </h1>
+        <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between mb-2 gap-4">
+          <h1 className="text-2xl sm:text-3xl font-bold text-gray-900">
+            Welcome back, {user?.firstName}!
+          </h1>
+          <div className="flex gap-2">
+            <button
+              onClick={handleLogout}
+              className="flex items-center px-3 py-2 sm:px-4 sm:py-2 bg-red-600 text-white rounded-lg hover:bg-red-700 transition-colors duration-200 shadow-md hover:shadow-lg text-sm sm:text-base"
+            >
+              <ArrowRightOnRectangleIcon className="h-4 w-4 sm:h-5 sm:w-5 mr-1 sm:mr-2" />
+              <span className="hidden sm:inline">Logout</span>
+              <span className="sm:hidden">Sign Out</span>
+            </button>
+          </div>
+        </div>
         <p className="text-gray-600 mb-8">
           {isAdmin 
             ? "Here's what's happening in your school today."
