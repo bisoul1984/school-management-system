@@ -77,7 +77,7 @@ const Footer = () => {
             <h3 className="text-lg font-semibold mb-4">Credits</h3>
             <p>Designed & Developed by: 
               <a 
-                href="https://www.bisrattadesse.com" 
+                href="https://www.bisrat-tadesse.com" 
                 target="_blank" 
                 rel="noopener noreferrer"
                 className="ml-1 text-blue-400 hover:text-blue-300"
