@@ -22,7 +22,7 @@
       "headers": [
         { 
           "key": "Access-Control-Allow-Origin", 
-          "value": "https://school-management-system-94li.vercel.app" 
+          "value": "https://school-management-system-bdya.vercel.app" 
         },
         { 
           "key": "Access-Control-Allow-Credentials", 
