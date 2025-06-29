@@ -23,6 +23,31 @@ import {
 import { Menu, Transition } from '@headlessui/react';
 import classNames from 'classnames';
 
+/**
+ * DashboardLayout Component
+ * 
+ * A comprehensive layout component that provides the main dashboard interface for authenticated users.
+ * This component includes a responsive sidebar, top navigation bar, and main content area.
+ * 
+ * Features:
+ * - Responsive sidebar with role-based navigation
+ * - Top navigation bar with user profile and notifications
+ * - Mobile-friendly hamburger menu
+ * - Role-based access control for navigation items
+ * - User profile section with logout functionality
+ * - Dynamic page titles based on current route
+ * 
+ * @component
+ * @param {Object} props - Component props
+ * @param {React.ReactNode} props.children - Child components to render in the main content area
+ * 
+ * @example
+ * ```jsx
+ * <DashboardLayout>
+ *   <DashboardContent />
+ * </DashboardLayout>
+ * ```
+ */
 const DashboardLayout = ({ children }) => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
@@ -30,11 +55,17 @@ const DashboardLayout = ({ children }) => {
   const { user } = useSelector((state) => state.auth);
   const [sidebarOpen, setSidebarOpen] = useState(false);
 
-  // Define which paths should show the admin navigation
+  /**
+   * Paths that should show admin navigation items
+   * @type {string[]}
+   */
   const adminNavigationPaths = ['/dashboard', '/students', '/teachers', '/classes'];
   const shouldShowAdminNav = adminNavigationPaths.includes(location.pathname);
 
-  // Admin navigation items (students, teachers, classes)
+  /**
+   * Admin navigation items for managing students, teachers, and classes
+   * @type {Array<{name: string, href: string, icon: React.Component, allowedRoles: string[]}>}
+   */
   const adminNavigation = [
     {
       name: 'Students',
@@ -56,7 +87,10 @@ const DashboardLayout = ({ children }) => {
     }
   ];
 
-  // Regular navigation items for other pages
+  /**
+   * Regular navigation items for other dashboard pages
+   * @type {Array<{name: string, href: string, icon: React.Component, allowedRoles: string[]}>}
+   */
   const regularNavigation = [
     {
       name: 'Dashboard',
@@ -114,10 +148,16 @@ const DashboardLayout = ({ children }) => {
     }
   ];
 
-  // Choose which navigation items to display
+  /**
+   * Navigation items to display based on current path
+   * @type {Array<{name: string, href: string, icon: React.Component, allowedRoles: string[]}>}
+   */
   const navigationItems = shouldShowAdminNav ? adminNavigation : regularNavigation;
 
-  // Define which paths should show the navbar
+  /**
+   * Paths that should display the top navigation bar
+   * @type {string[]}
+   */
   const showNavbarPaths = [
     '/dashboard',
     '/students',
@@ -134,7 +174,10 @@ const DashboardLayout = ({ children }) => {
   ];
   const shouldShowNavbar = showNavbarPaths.includes(location.pathname);
 
-  // Function to get page title based on current path
+  /**
+   * Gets the page title based on the current route
+   * @returns {string} The title for the current page
+   */
   const getPageTitle = () => {
     const path = location.pathname;
     
@@ -170,9 +213,13 @@ const DashboardLayout = ({ children }) => {
     }
   };
 
+  /**
+   * Handles user logout
+   * Dispatches logout action and navigates to home page
+   */
   const handleLogout = () => {
     dispatch(logout());
-    navigate('/login');
+    navigate('/');
   };
 
   return (
@@ -214,6 +261,17 @@ const DashboardLayout = ({ children }) => {
                   {item.name}
                 </NavLink>
               ))}
+            
+            {/* Logout button in mobile sidebar */}
+            <button
+              onClick={handleLogout}
+              className="group flex items-center px-2 py-2 text-sm font-medium rounded-md text-gray-600 hover:bg-gray-50 hover:text-gray-900 w-full text-left"
+            >
+              <svg className="mr-3 h-6 w-6 flex-shrink-0 text-gray-400 group-hover:text-gray-500" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1" />
+              </svg>
+              Logout
+            </button>
           </nav>
         </div>
       </div>
@@ -263,6 +321,17 @@ const DashboardLayout = ({ children }) => {
                     )}
                   </NavLink>
                 ))}
+              
+              {/* Logout button in desktop sidebar */}
+              <button
+                onClick={handleLogout}
+                className="group flex items-center px-2 py-2 text-sm font-medium rounded-md text-gray-100 hover:bg-gray-500 hover:text-white transition-colors duration-150 w-full text-left"
+              >
+                <svg className="mr-3 flex-shrink-0 h-6 w-6 text-gray-200 group-hover:text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1" />
+                </svg>
+                Logout
+              </button>
             </nav>
           </div>
           {/* User profile section */}

@@ -17,6 +17,25 @@ import {
 import { motion, AnimatePresence } from 'framer-motion';
 import { Menu, Transition } from '@headlessui/react';
 
+/**
+ * Navbar Component
+ * 
+ * A responsive navigation bar that provides navigation links and user authentication controls.
+ * The navbar adapts its content based on the user's authentication status and role.
+ * 
+ * Features:
+ * - Responsive design with mobile hamburger menu
+ * - Dynamic navigation based on authentication status
+ * - User profile and logout functionality
+ * - Registration dropdown for different user types
+ * - Smooth animations and transitions
+ * 
+ * @component
+ * @example
+ * ```jsx
+ * <Navbar />
+ * ```
+ */
 const Navbar = () => {
   const [isOpen, setIsOpen] = useState(false);
   const { isAuthenticated, user } = useSelector(state => state.auth);
@@ -24,12 +43,20 @@ const Navbar = () => {
   const navigate = useNavigate();
   const location = useLocation();
 
+  /**
+   * Navigation items for unauthenticated users
+   * @type {Array<{name: string, href: string, icon: React.Component}>}
+   */
   const navigation = [
     { name: 'Home', href: '/', icon: HomeIcon },
     { name: 'About', href: '/about', icon: BookOpenIcon },
     { name: 'Contact', href: '/contact', icon: ChartBarIcon },
   ];
 
+  /**
+   * Navigation items for authenticated users
+   * @type {Array<{name: string, href: string, icon: React.Component}>}
+   */
   const authenticatedNavigation = [
     { name: 'Dashboard', href: '/dashboard', icon: ChartBarIcon },
     { name: 'Students', href: '/students', icon: UserGroupIcon },
@@ -37,17 +64,30 @@ const Navbar = () => {
     { name: 'Classes', href: '/classes', icon: BookOpenIcon },
   ];
 
+  /**
+   * User registration types available
+   * @type {Array<{name: string, href: string}>}
+   */
   const userTypes = [
     { name: 'Student', href: '/student/register' },
     { name: 'Teacher', href: '/teacher/register' },
     { name: 'Parent', href: '/parent/register' }
   ];
 
+  /**
+   * Handles user logout
+   * Dispatches logout action and navigates to home page
+   */
   const handleLogout = () => {
     dispatch(logout());
     navigate('/');
   };
 
+  /**
+   * Checks if a navigation item is currently active
+   * @param {string} path - The path to check
+   * @returns {boolean} True if the path matches current location
+   */
   const isActive = (path) => {
     return location.pathname === path;
   };

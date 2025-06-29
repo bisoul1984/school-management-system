@@ -46,6 +46,7 @@ import { saveAs } from 'file-saver';
 import * as XLSX from 'xlsx';
 import jsPDF from 'jspdf';
 import 'jspdf-autotable';
+import { motion } from 'framer-motion';
 
 // Register ChartJS components
 ChartJS.register(
@@ -59,6 +60,26 @@ ChartJS.register(
   Legend
 );
 
+/**
+ * Dashboard Component
+ * 
+ * The main dashboard component that displays role-specific information and statistics.
+ * This component adapts its content based on the user's role (admin, teacher, student, parent).
+ * 
+ * Features:
+ * - Role-based dashboard content
+ * - Real-time statistics and metrics
+ * - Quick action buttons
+ * - Recent activities and notifications
+ * - Responsive design with animations
+ * - Dynamic content loading
+ * 
+ * @component
+ * @example
+ * ```jsx
+ * <Dashboard />
+ * ```
+ */
 const Dashboard = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();

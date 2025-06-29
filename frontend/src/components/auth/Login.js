@@ -1,7 +1,7 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { Link, useNavigate } from 'react-router-dom';
-import { login } from '../../store/slices/authSlice';
+import { login, clearError } from '../../store/slices/authSlice';
 import { 
   EnvelopeIcon, 
   LockClosedIcon,
@@ -10,37 +10,120 @@ import {
 } from '@heroicons/react/24/outline';
 import LoadingSpinner from '../common/LoadingSpinner';
 
+/**
+ * Login Component
+ * 
+ * A comprehensive login form component that handles user authentication.
+ * Provides a user-friendly interface for logging into the school management system.
+ * 
+ * Features:
+ * - Email and password authentication
+ * - Password visibility toggle
+ * - Form validation with error handling
+ * - Loading states during authentication
+ * - Redirect to dashboard on successful login
+ * - Links to registration and password reset
+ * - Responsive design with animations
+ * 
+ * @component
+ * @example
+ * ```jsx
+ * <Login />
+ * ```
+ */
 const Login = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
-  const { loading, error } = useSelector((state) => state.auth);
+  const { loading, error, isAuthenticated, user } = useSelector((state) => state.auth);
   
   const [formData, setFormData] = useState({
     email: '',
     password: '',
   });
   const [showPassword, setShowPassword] = useState(false);
+  const [errors, setErrors] = useState({});
 
+  /**
+   * Redirects to appropriate dashboard based on user role
+   */
+  useEffect(() => {
+    if (isAuthenticated && user) {
+      navigate('/dashboard');
+    }
+  }, [isAuthenticated, user, navigate]);
+
+  /**
+   * Clears any existing authentication errors when component mounts
+   */
+  useEffect(() => {
+    dispatch(clearError());
+  }, [dispatch]);
+
+  /**
+   * Validates the login form data
+   * @returns {boolean} True if form is valid, false otherwise
+   */
+  const validateForm = () => {
+    const newErrors = {};
+
+    if (!formData.email) {
+      newErrors.email = 'Email is required';
+    } else if (!/\S+@\S+\.\S+/.test(formData.email)) {
+      newErrors.email = 'Email is invalid';
+    }
+
+    if (!formData.password) {
+      newErrors.password = 'Password is required';
+    } else if (formData.password.length < 6) {
+      newErrors.password = 'Password must be at least 6 characters';
+    }
+
+    setErrors(newErrors);
+    return Object.keys(newErrors).length === 0;
+  };
+
+  /**
+   * Handles form input changes
+   * @param {React.ChangeEvent<HTMLInputElement>} e - Input change event
+   */
   const handleChange = (e) => {
     const { name, value } = e.target;
     setFormData(prev => ({
       ...prev,
       [name]: value
     }));
+    
+    // Clear error for this field when user starts typing
+    if (errors[name]) {
+      setErrors(prev => ({
+        ...prev,
+        [name]: ''
+      }));
+    }
   };
 
+  /**
+   * Handles form submission
+   * @param {React.FormEvent} e - Form submission event
+   */
   const handleSubmit = async (e) => {
     e.preventDefault();
-    try {
-      console.log('Submitting login with:', formData); // Debug log
-      const result = await dispatch(login(formData)).unwrap();
-      console.log('Login result:', result); // Debug log
-      if (result.success) {
-        navigate('/dashboard');
+    
+    if (validateForm()) {
+      try {
+        await dispatch(login(formData)).unwrap();
+        // Navigation will be handled by useEffect
+      } catch (error) {
+        console.error('Login failed:', error);
       }
-    } catch (err) {
-      console.error('Login error:', err);
     }
+  };
+
+  /**
+   * Toggles password visibility
+   */
+  const togglePasswordVisibility = () => {
+    setShowPassword(!showPassword);
   };
 
   return (
@@ -114,7 +197,7 @@ const Login = () => {
                 <button
                   type="button"
                   className="absolute inset-y-0 right-0 pr-3 flex items-center"
-                  onClick={() => setShowPassword(!showPassword)}
+                  onClick={togglePasswordVisibility}
                 >
                   {showPassword ? (
                     <EyeSlashIcon className="h-5 w-5 text-gray-400 hover:text-gray-500" />
