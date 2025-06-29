@@ -12,7 +12,7 @@ const PrivacyPage = () => {
             <section>
               <h2 className="text-2xl font-semibold text-gray-800 mb-4">Introduction</h2>
               <p className="text-gray-600 leading-relaxed">
-                At [School Name], we take your privacy seriously. This Privacy Policy explains how we collect, use, 
+                We take your privacy seriously. This Privacy Policy explains how we collect, use, 
                 disclose, and safeguard your information when you use our school management system.
               </p>
             </section>
@@ -46,8 +46,8 @@ const PrivacyPage = () => {
               <div className="text-gray-600">
                 <p>If you have any questions about our Privacy Policy, please contact us:</p>
                 <div className="mt-4">
-                  <p>Email: privacy@school.com</p>
-                  <p>Phone: (123) 456-7890</p>
+                  <p>Email: fikertetadesse1403@gmail.com</p>
+                  <p>Phone: +251967044111</p>
                 </div>
               </div>
             </section>

@@ -6,24 +6,44 @@ import api from '../../services/api';
 const ChildProgress = () => {
   const [progress, setProgress] = useState(null);
   const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
   const { user } = useSelector((state) => state.auth);
 
   useEffect(() => {
     const fetchProgress = async () => {
+      // Check if user and user.id exist
+      if (!user || !user.id) {
+        setError('User information not available');
+        setLoading(false);
+        return;
+      }
+
       try {
         const response = await api.get(`/parents/${user.id}/child-progress`);
         setProgress(response.data);
       } catch (error) {
         console.error('Error fetching progress:', error);
+        setError(error.response?.data?.message || 'Failed to fetch progress');
       } finally {
         setLoading(false);
       }
     };
 
     fetchProgress();
-  }, [user.id]);
+  }, [user?.id]);
 
   if (loading) return <LoadingSpinner />;
+
+  if (error) {
+    return (
+      <div className="p-6">
+        <h1 className="text-2xl font-bold mb-6">Child's Progress</h1>
+        <div className="bg-red-50 border border-red-200 rounded-md p-4">
+          <p className="text-red-800">{error}</p>
+        </div>
+      </div>
+    );
+  }
 
   return (
     <div className="p-6">

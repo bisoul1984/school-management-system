@@ -27,11 +27,22 @@ function TeacherList() {
   const [sortOrder, setSortOrder] = useState('asc');
   const [filterSubject, setFilterSubject] = useState('all');
 
-  useEffect(() => {
-    console.log('Initial teachers fetch');
+  // Memoize the fetch functions to prevent unnecessary re-renders
+  const fetchTeachersData = useCallback(() => {
+    console.log('Fetching teachers data');
     dispatch(fetchTeachers());
+  }, [dispatch]);
+
+  const fetchClassesData = useCallback(() => {
+    console.log('Fetching classes data');
     dispatch(fetchClasses());
   }, [dispatch]);
+
+  useEffect(() => {
+    console.log('Initial teachers fetch');
+    fetchTeachersData();
+    fetchClassesData();
+  }, [fetchTeachersData, fetchClassesData]);
 
   const getAssignedClasses = (teacherId) => {
     if (!Array.isArray(classes)) return [];

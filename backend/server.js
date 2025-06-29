@@ -20,6 +20,7 @@ const attendanceRoutes = require('./routes/attendance.routes');
 const eventRoutes = require('./routes/event.routes');
 const messageRoutes = require('./routes/message.routes');
 const gradeRoutes = require('./routes/grade.routes');
+const parentRoutes = require('./routes/parent.routes');
 
 const app = express();
 
@@ -74,6 +75,7 @@ app.use('/api/attendance', attendanceRoutes);
 app.use('/api/events', eventRoutes);
 app.use('/api/messages', messageRoutes);
 app.use('/api/grades', gradeRoutes);
+app.use('/api/parents', parentRoutes);
 
 // Test route
 app.get('/', (req, res) => {
